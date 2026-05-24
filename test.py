@@ -48,17 +48,27 @@ def add_books():
     cursor = db.cursor()
     bookname = input ('Enter your book name: ')
     author = input('Enter the author: ')
-    sql = 'SELECT * FROM books;'
+    genre = input('Enter the genre: ')
+    publishyear = input('Enter the published year: ')
+    sql = f'INSERT INTO books (book_name, author, genre, published_year) VALUES("{bookname}", "{author}", "{genre}", "{publishyear}");'
     cursor.execute(sql)
     results = cursor.fetchall()
-    #loop through all the results
-    print('book_id     book_name                     author                   genre               publish_year')
-    for book in results:
-        print(f'{book[0]:<12}{book[1]:<30}{book[2]:<25}{book[3]:<20}{book[4]:<20}')
         #loop finished here
+    db.commit()
     db.close()
+        
 
-
+def delete_books():
+    db = sqlite3.connect(DATABASE)
+    cursor = db.cursor()
+    bookid = input ('What book do you what to delete? Please input the id of the book: ')
+    sql = f'DELETE FROM books WHERE id = {bookid}'
+    cursor.execute(sql)
+    results = cursor.fetchall()
+        #loop finished here
+    db.commit()
+    db.close()
+    
 # functions for borrowers table
 def print_all_borrowers():
     '''Show all borrowers details'''   
@@ -154,8 +164,9 @@ d. Exit\n""")
 What would you like to do?
 1. Print all books
 2. Sort all books
-3. add books
-4. Exit\n""")
+3. Add books
+4. Delete books
+5. Exit\n""")
         #Call different functions when different numbers are inputed
         if user_input_for_books == '1':
             print_all_books()
@@ -164,6 +175,8 @@ What would you like to do?
         elif user_input_for_books == '3':
             add_books()
         elif user_input_for_books == '4':
+            delete_books()
+        elif user_input_for_books == '5':
             break
         else:
             print('That is not an option.\n')
@@ -198,8 +211,7 @@ What would you like to do?
         elif user_input_for_loans == '2':
             print_all_loans_sort_by_columns()
         elif user_input_for_borrowers == '3':
-            break
-        
+            break    
     else:
         if user_input == 'd':
             break
