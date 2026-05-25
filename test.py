@@ -6,7 +6,7 @@ DATABASE = 'Library_Catalog.db'
 
 #functions for books table
 def print_all_books():
-    #Show all the books in the library  
+    '''Show all the books in the library'''  
     db = sqlite3.connect(DATABASE)
     cursor = db.cursor()
     sql = 'SELECT * FROM books;'
@@ -21,8 +21,9 @@ def print_all_books():
 
 
 def print_all_books_sort_by_columns():
-    #Show all the books in the library order by book names 
+    '''Show all the books in the library order by columns'''
     options = {'1': "book_name", '2': "author", '3': "genre", '4': "published_year"}
+    #Using a while loop and try except to make sure the code doesn't break
     while True:  
         columnname = input('How would you like to sort the books?\nBy 1.book_name\n2.author\n3.genre\n4.published_year\n')
         try:
@@ -39,39 +40,43 @@ def print_all_books_sort_by_columns():
             db.close()
             break
         except:
+            #If the input is not an option in the list print the option doesn't exist and ask the user again
             print("Option doesn't exist.")
 
 
 def add_books():
-    #adding more books to the library database
+    '''adding more books to the library database'''
     db = sqlite3.connect(DATABASE)
     cursor = db.cursor()
+    #Asking user to enter something for each column
     bookname = input ('Enter your book name: ')
     author = input('Enter the author: ')
     genre = input('Enter the genre: ')
     publishyear = input('Enter the published year: ')
+    #Put them into the database
     sql = f'INSERT INTO books (book_name, author, genre, published_year) VALUES("{bookname}", "{author}", "{genre}", "{publishyear}");'
     cursor.execute(sql)
-    results = cursor.fetchall()
+    cursor.fetchall()
         #loop finished here
     db.commit()
     db.close()
         
 
 def delete_books():
+    '''Deleting books from the database'''
     db = sqlite3.connect(DATABASE)
     cursor = db.cursor()
+    #Ask which book the user want to delete
     bookid = input ('What book do you what to delete? Please input the id of the book: ')
     sql = f'DELETE FROM books WHERE id = {bookid}'
     cursor.execute(sql)
-    results = cursor.fetchall()
-        #loop finished here
+    cursor.fetchall()
     db.commit()
     db.close()
     
 # functions for borrowers table
 def print_all_borrowers():
-    '''Show all borrowers details'''   
+    '''Show all borrower details'''   
     db = sqlite3.connect(DATABASE)
     cursor = db.cursor()
     sql = 'SELECT * FROM borrowers;'
@@ -86,8 +91,9 @@ def print_all_borrowers():
 
 
 def print_all_borrowers_sort_by_columns():
-    #Show all the books in the library order by book names 
+    '''Show all the borrowers order by column''' 
     options = {'1': "first_name", '2': "last_name", '3': "email"}
+    #Using a while loop and try except to make sure the code doesn't break
     while True:  
         columnname = input('How would you like to sort the borrowers?\n1.first_name\n2.last_name\n3.emails\n')
         try:
@@ -104,13 +110,41 @@ def print_all_borrowers_sort_by_columns():
             db.close()
             break
         except:
+            #If the input is not an option in the list print the option doesn't exist and ask the user again
             print("Option doesn't exist.")
 
 
+def add_borrowers():
+    '''add borrowers to the borrowers table'''
+    db = sqlite3.connect(DATABASE)
+    cursor = db.cursor()
+    #Asking user to input the information of the borrower
+    first_name = input ('Enter the first name: ')
+    last_name = input('Enter the last name: ')
+    email = input('Enter the email: ')
+    sql = f'INSERT INTO borrowers (first_name, last_name, email) VALUES("{first_name}", "{last_name}", "{email}");'
+    cursor.execute(sql)
+    cursor.fetchall()
+        #loop finished here
+    db.commit()
+    db.close()
+        
 
-# functions for loans tablec
+def delete_borrowers():
+    '''delete borrowers from the borrowers table'''
+    db = sqlite3.connect(DATABASE)
+    cursor = db.cursor()
+    #Asking which borrower the user wants to delete
+    borrowerid = input ("Please enter borrower's id: ")
+    sql = f'DELETE FROM borrowers WHERE id = {borrowerid}'
+    cursor.execute(sql)
+    cursor.fetchall()
+    db.commit()
+    db.close()
+
+# functions for loans table
 def print_all_loans():
-    #Show all the loans in the library  
+    '''Show all the loans in the library ''' 
     db = sqlite3.connect(DATABASE)
     cursor = db.cursor()
     sql = 'SELECT * FROM loans;'
@@ -125,9 +159,10 @@ def print_all_loans():
 
 
 def print_all_loans_sort_by_columns():
-    #Show all the books in the library order by book names 
+    '''Show all the loans in the library order by column names''' 
     options = {'1': "book_id", '2': "borrower_id", '3': "loan_date", '4': "due_date", '5': "return_date"}
     while True:  
+        #Using a while loop and try except to make sure the code doesn't break
         columnname = input('How would you like to sort the borrowers?\n1.books\n2.borrowers\n3.loan_date\n4.due_date\n5.return_date\n')
         try:
             db = sqlite3.connect(DATABASE)
@@ -143,7 +178,26 @@ def print_all_loans_sort_by_columns():
             db.close()
             break
         except:
+            #If the input is not an option in the list print the option doesn't exist and ask the user again
             print("Option doesn't exist.")
+
+
+def add_loans():
+    '''add loans to the loans table'''
+    db = sqlite3.connect(DATABASE)
+    cursor = db.cursor()
+    #Asking the user to input the information of the loan
+    book_id = input ('Enter the book id: ')
+    borrower_id = input('Enter the borrower id: ')
+    loan_date = input('Enter the loan date: ')
+    due_date = input('Enter the due date: \n(loan date + 15 days)')
+    return_date = input('Enter the return date: \n(if not returned, please enter Not returned)')
+    sql = f'INSERT INTO borrowers (book_id, borrower_id, loan_date, due_date, return_date) VALUES("{book_id}", "{borrower_id}", "{loan_date}", "{due_date}", "{return_date}");'
+    cursor.execute(sql)
+    cursor.fetchall()
+        #loop finished here
+    db.commit()
+    db.close()
 
 
  #creating a while loop for the user to use the functions. 
@@ -189,13 +243,19 @@ What would you like to do?
 What would you like to do?
 1. Print all borrower details
 2. Sort borrower details 
-3. Exit\n""")
+3. Add borrower
+4. Delete borrower
+5. Exit\n""")
         #Call different functions when different numbers are inputed
         if user_input_for_borrowers == '1':
             print_all_borrowers()
         elif user_input_for_borrowers == '2':
             print_all_borrowers_sort_by_columns()
         elif user_input_for_borrowers == '3':
+            add_borrowers()
+        elif user_input_for_borrowers == '4':
+            delete_borrowers()
+        elif user_input_for_borrowers == '5':
             break
         else:
             print('That is not an option.\n')
