@@ -64,16 +64,22 @@ def add_books():
 
 def delete_books():
     '''Deleting books from the database'''
-    db = sqlite3.connect(DATABASE)
-    cursor = db.cursor()
-    #Ask which book the user want to delete
-    bookid = input ('What book do you what to delete? Please input the id of the book: ')
-    sql = f'DELETE FROM books WHERE id = {bookid}'
-    cursor.execute(sql)
-    cursor.fetchall()
-    db.commit()
-    db.close()
-    
+    #Using a while loop to make sure the code doesn't break when a string is entered.
+    while True:
+        try:
+            db = sqlite3.connect(DATABASE)
+            cursor = db.cursor()
+            #Ask which book the user want to delete
+            bookid = int(input ('What book do you what to delete? Please input the id(number format) of the book: '))
+            sql = f'DELETE FROM books WHERE id = {bookid}'
+            cursor.execute(sql)
+            cursor.fetchall()
+            db.commit()
+            db.close()
+            break
+        except:
+            print('Please enter a valid id.')
+        
 # functions for borrowers table
 def print_all_borrowers():
     '''Show all borrower details'''   
@@ -132,15 +138,21 @@ def add_borrowers():
 
 def delete_borrowers():
     '''delete borrowers from the borrowers table'''
-    db = sqlite3.connect(DATABASE)
-    cursor = db.cursor()
-    #Asking which borrower the user wants to delete
-    borrowerid = input ("Please enter borrower's id: ")
-    sql = f'DELETE FROM borrowers WHERE id = {borrowerid}'
-    cursor.execute(sql)
-    cursor.fetchall()
-    db.commit()
-    db.close()
+    #Using a while loop to make sure the code doesn't break when a string is entered.
+    while True:
+        try:
+            db = sqlite3.connect(DATABASE)
+            cursor = db.cursor()
+            #Asking which borrower the user wants to delete
+            borrowerid = int(input ("Please enter borrower's id: "))
+            sql = f'DELETE FROM borrowers WHERE id = {borrowerid}'
+            cursor.execute(sql)
+            cursor.fetchall()
+            db.commit()
+            db.close()
+            break
+        except:
+            print('Please enter a valid id.')
 
 # functions for loans table
 def print_all_loans():
@@ -265,13 +277,16 @@ What would you like to do?
 What would you like to do?
 1. Print all loans 
 2. Sort recent loans
-3. Exit\n""")
+3. Add loan
+4. Exit\n""")
         if user_input_for_loans == '1':
             print_all_loans()
         elif user_input_for_loans == '2':
             print_all_loans_sort_by_columns()
-        elif user_input_for_borrowers == '3':
-            break    
+        elif user_input_for_loans == '3':
+            add_loans()
+        elif user_input_for_loans =='4':
+            break  
     else:
         if user_input == 'd':
             break
