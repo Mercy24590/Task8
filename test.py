@@ -206,11 +206,48 @@ def add_loans():
     return_date = input('Enter the return date: \n(if not returned, please enter Not returned)')
     sql = f'INSERT INTO borrowers (book_id, borrower_id, loan_date, due_date, return_date) VALUES("{book_id}", "{borrower_id}", "{loan_date}", "{due_date}", "{return_date}");'
     cursor.execute(sql)
-    cursor.fetchall()
-        #loop finished here
+    cursor.fetchall()  
     db.commit()
     db.close()
 
+
+def add_return_date():
+    '''allows user to add the return date when a book is returned'''
+    while True:
+        try: 
+            db = sqlite3.connect(DATABASE)
+            cursor = db.cursor()
+            loan_id = int(input('Enter the loan id: '))
+            return_date = input('Enter the return date (year-month-date): ')
+            sql = f'UPDATE Loans SET return_date = {return_date} WHERE loan_id = {loan_id};'
+            cursor.execute(sql)
+            cursor.fetchall()
+            db.commit()
+            db.close()
+            break
+        except:
+            print('Please enter a valid id.')
+
+
+def show_a_persons_loans():
+    '''allow user to check the loans for a specific person.'''
+    while True:
+        try:
+            db = sqlite3.connect(DATABASE)
+            cursor = db.cursor()
+            #putting all three tables together
+            borrower_id = int(input("Enter the borrower's id: "))
+            sql = f'SELECT Loans.*, Borrowers.first_name, Borrowers.last_name, Books.book_name FROM Books, Borrowers, Loans WHERE Loans.borrower_id = {borrower_id} AND loans.borrower_id = Borrowers.borrower_id AND Loans.book_id = Books.id;'
+            results = cursor.fetchall()
+            #loop through all the results
+            print('loan_id   borrower_id    name         book_id   book_name      loan_date      due_date       return_date')
+            for loan in results:
+                print(f'{loan[0]:<10}{loan[2]:<15}{loan[6]:<6}{loan[7]:<7}{loan[1]:<10}{loan[8]:<15}{loan[3]:<15}{loan[4]:<15}{loan[5]:<10}')
+                #loop finished here
+            db.close()
+            break
+        except:
+            print('Please enter a valid id.')
 
  #creating a while loop for the user to use the functions. 
 while True:
@@ -278,7 +315,9 @@ What would you like to do?
 1. Print all loans 
 2. Sort recent loans
 3. Add loan
-4. Exit\n""")
+4. Check a borrower's loans
+5. Add return date
+6. Exit\n""")
         if user_input_for_loans == '1':
             print_all_loans()
         elif user_input_for_loans == '2':
@@ -286,7 +325,11 @@ What would you like to do?
         elif user_input_for_loans == '3':
             add_loans()
         elif user_input_for_loans =='4':
-            break  
+            show_a_persons_loans()
+        elif user_input_for_loans =='5':
+            add_return_date()
+        elif user_input_for_loans =='6':
+            break
     else:
         if user_input == 'd':
             break
