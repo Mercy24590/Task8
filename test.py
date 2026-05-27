@@ -299,7 +299,8 @@ def show_a_persons_loans():
         except:
             print('Please enter a valid id.')
 
- #creating a while loop for the user to use the functions. 
+
+#creating a while loop for the user to use the functions. 
 while True:
 # asking what the user want to do.
     user_input = input(
@@ -312,58 +313,72 @@ d. Exit\n""")
     
     #If the user wants to see details about the books, show the options
     if user_input == 'a':
-        user_input_for_books = input(
+        while True:
+            try:
+                user_input_for_books = int(input(
 """
 What would you like to do?
 1. Print all books
 2. Sort all books
 3. Add books
 4. Delete books
-5. Exit\n""")
-        #Call different functions when different numbers are entered
-        if user_input_for_books == '1':
-            print_all_books()
-        elif user_input_for_books == '2':
-            print_all_books_sort_by_columns()
-        elif user_input_for_books == '3':
-            add_books()
-        elif user_input_for_books == '4':
-            delete_books()
-        elif user_input_for_books == '5':
-            break
-        else:
-            #when the input doesn't meet any of the conditions above, print that is not an option.
-            print('That is not an option.\n')
+5. Exit\n"""))
+
+                #Call different functions when different numbers are entered
+                if user_input_for_books == 1:
+                    print_all_books()
+                elif user_input_for_books == 2:
+                    print_all_books_sort_by_columns()
+                elif user_input_for_books == 3:
+                    add_books()
+                elif user_input_for_books == 4:
+                    delete_books()
+                elif user_input_for_books == 5:
+                    break
+                #catches all the numbers out of range
+                else:
+                    print('That is not an option.\n')
+            except:
+                    #when the input doesn't meet any of the conditions above, print that is not an option.
+                    print('That is not an option.\n')
 
 
     #If the user wants to see details about the borrowers, ask what they want to do
     elif user_input == 'b':
-        user_input_for_borrowers = input(
+        while True:
+            try:
+                user_input_for_borrowers = int(input(
 """
 What would you like to do?
 1. Print all borrower details
 2. Sort borrower details 
 3. Add borrower
 4. Delete borrower
-5. Exit\n""")
-        #Call different functions when different numbers are entered
-        if user_input_for_borrowers == '1':
-            print_all_borrowers()
-        elif user_input_for_borrowers == '2':
-            print_all_borrowers_sort_by_columns()
-        elif user_input_for_borrowers == '3':
-            add_borrowers()
-        elif user_input_for_borrowers == '4':
-            delete_borrowers()
-        elif user_input_for_borrowers == '5':
-            break
-        else:
-            #when the input doesn't meet any of the conditions above, print that is not an option.
-            print('That is not an option.\n')
+5. Exit\n"""))
+                #Call different functions when different numbers are entered
+                if user_input_for_borrowers == 1:
+                    print_all_borrowers()
+                elif user_input_for_borrowers == 2:
+                    print_all_borrowers_sort_by_columns()
+                elif user_input_for_borrowers == 3:
+                    add_borrowers()
+                elif user_input_for_borrowers == 4:
+                    delete_borrowers()
+                elif user_input_for_borrowers == 5:
+                    break
+                #catches all the numbers out of range
+                else:
+                    print('That is not an option.\n')
+            except:
+                #when the input doesn't meet any of the conditions above, print that is not an option.
+                print('That is not an option.\n')
+
 
     #If the user wants to see details about the loans, ask what they want to do      
     elif user_input == 'c':
-        user_input_for_loans = input(
+        while True:
+            try:
+                user_input_for_loans = int(input(
 """
 What would you like to do?
 1. Print all loans 
@@ -371,26 +386,30 @@ What would you like to do?
 3. Add loan
 4. Check a borrower's loans
 5. Add return date
-6. Exit\n""")
-        #Call different functions when different numbers are entered
-        if user_input_for_loans == '1':
-            print_all_loans()
-        elif user_input_for_loans == '2':
-            print_all_loans_sort_by_columns()
-        elif user_input_for_loans == '3':
-            add_loans()
-        elif user_input_for_loans =='4':
-            show_a_persons_loans()
-        elif user_input_for_loans =='5':
-            add_return_date()
-        elif user_input_for_loans =='6':
-            break
-        else:
-            #when the input doesn't meet any of the conditions above, print that is not an option.
-            print('That is not an option.\n')
+6. Exit\n"""))
+                #Call different functions when different numbers are entered
+                if user_input_for_loans == 1:
+                    print_all_loans()
+                elif user_input_for_loans == 2:
+                    print_all_loans_sort_by_columns()
+                elif user_input_for_loans == 3:
+                    add_loans()
+                elif user_input_for_loans == 4:
+                    show_a_persons_loans()
+                elif user_input_for_loans == 5:
+                    add_return_date()
+                elif user_input_for_loans == 6 :
+                    break
+                #catches all the numbers out of range
+                else:
+                    print('That is not an option.\n')
+            except:
+                #when the input doesn't meet any of the conditions above, print that is not an option.
+                print('That is not an option.\n')
 
+    elif user_input == 'd':
+        break
     else:
-        if user_input == 'd':
-            break
+        print('That is not an option, please enter again.')
 
 
