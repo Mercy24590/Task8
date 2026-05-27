@@ -7,6 +7,7 @@ DATABASE = 'Library_Catalog.db'
 #functions for books table
 def print_all_books():
     '''Show all the books in the library'''  
+    #Connect python and database
     db = sqlite3.connect(DATABASE)
     cursor = db.cursor()
     sql = 'SELECT * FROM books;'
@@ -17,27 +18,33 @@ def print_all_books():
     for book in results:
         print(f'{book[0]:<12}{book[1]:<30}{book[2]:<25}{book[3]:<20}{book[4]:<20}')
         #loop finished here
+    #close the database
     db.close()
 
 
 def print_all_books_sort_by_columns():
     '''Show all the books in the library order by columns'''
+    #Creating a list to store all the options
     options = {'1': "book_name", '2': "author", '3': "genre", '4': "published_year"}
     #Using a while loop and try except to make sure the code doesn't break
     while True:  
         columnname = input('How would you like to sort the books?\nBy 1.book_name\n2.author\n3.genre\n4.published_year\n')
         try:
+            #Connect python and database
             db = sqlite3.connect(DATABASE)
             cursor = db.cursor()
             sql = f'SELECT * FROM books ORDER BY {options[columnname]} ASC;'
             cursor.execute(sql)
             results = cursor.fetchall()
             #loop through all the results
+            #print out the table nicely
             print('book_id     book_name                     author                   genre               publish_year')
             for book in results:
                 print(f'{book[0]:<12}{book[1]:<30}{book[2]:<25}{book[3]:<20}{book[4]:<20}')
                 #loop finished here
+            #close the database
             db.close()
+            #break the loop after printing out the table
             break
         except:
             #If the input is not an option in the list print the option doesn't exist and ask the user again
@@ -57,8 +64,9 @@ def add_books():
     sql = f'INSERT INTO books (book_name, author, genre, published_year) VALUES("{bookname}", "{author}", "{genre}", "{publishyear}");'
     cursor.execute(sql)
     cursor.fetchall()
-        #loop finished here
+    #Commit all changes made in the database
     db.commit()
+    #close the database
     db.close()
         
 
@@ -74,15 +82,19 @@ def delete_books():
             sql = f'DELETE FROM books WHERE id = {bookid}'
             cursor.execute(sql)
             cursor.fetchall()
+            #Commit all changes made in the database
             db.commit()
+            #close the database
             db.close()
+            #break the loop when the changes are made in the database
             break
         except:
             print('Please enter a valid id.')
         
 # functions for borrowers table
 def print_all_borrowers():
-    '''Show all borrower details'''   
+    '''Show all borrower details''' 
+    #connecting python and database  
     db = sqlite3.connect(DATABASE)
     cursor = db.cursor()
     sql = 'SELECT * FROM borrowers;'
@@ -93,16 +105,19 @@ def print_all_borrowers():
     for person in results:
         print(f'{person[0]:<17}{person[1]:<20}{person[2]:<25}{person[3]:<20}')
         #loop finished here
+    #close the database
     db.close()
 
 
 def print_all_borrowers_sort_by_columns():
     '''Show all the borrowers order by column''' 
+    #Creating a list to store all the options
     options = {'1': "first_name", '2': "last_name", '3': "email"}
     #Using a while loop and try except to make sure the code doesn't break
     while True:  
         columnname = input('How would you like to sort the borrowers?\n1.first_name\n2.last_name\n3.emails\n')
         try:
+            #connecting python and database
             db = sqlite3.connect(DATABASE)
             cursor = db.cursor()
             sql = f'SELECT * FROM borrowers ORDER BY {options[columnname]} ASC;'
@@ -113,7 +128,9 @@ def print_all_borrowers_sort_by_columns():
             for person in results:
                 print(f'{person[0]:<17}{person[1]:<20}{person[2]:<25}{person[3]:<20}')
                 #loop finished here
+            #close the database
             db.close()
+            #break the loop after printing out the table
             break
         except:
             #If the input is not an option in the list print the option doesn't exist and ask the user again
@@ -122,17 +139,20 @@ def print_all_borrowers_sort_by_columns():
 
 def add_borrowers():
     '''add borrowers to the borrowers table'''
+    #connecting python and database
     db = sqlite3.connect(DATABASE)
     cursor = db.cursor()
     #Asking user to input the information of the borrower
     first_name = input ('Enter the first name: ')
     last_name = input('Enter the last name: ')
     email = input('Enter the email: ')
+    #Use the variables that stored the inputs in sql
     sql = f'INSERT INTO borrowers (first_name, last_name, email) VALUES("{first_name}", "{last_name}", "{email}");'
     cursor.execute(sql)
     cursor.fetchall()
-        #loop finished here
+    #Commit all changes made in the database
     db.commit()
+    #close the database
     db.close()
         
 
@@ -141,22 +161,28 @@ def delete_borrowers():
     #Using a while loop to make sure the code doesn't break when a string is entered.
     while True:
         try:
+            #connecting python and database
             db = sqlite3.connect(DATABASE)
             cursor = db.cursor()
-            #Asking which borrower the user wants to delete
+            #Asking which borrower the user wants to delete, converting their input into a integer, so if something else is entered the code will move on to except
             borrowerid = int(input ("Please enter borrower's id: "))
             sql = f'DELETE FROM borrowers WHERE id = {borrowerid}'
             cursor.execute(sql)
             cursor.fetchall()
+            #Commit all changes made in the database 
             db.commit()
+            #close the database
             db.close()
+            #break the loop when the changes are made in the database
             break
         except:
+            #catches any invalid inputs and made sure the code doesn't break
             print('Please enter a valid id.')
 
 # functions for loans table
 def print_all_loans():
     '''Show all the loans in the library ''' 
+    #connecting python and database
     db = sqlite3.connect(DATABASE)
     cursor = db.cursor()
     sql = 'SELECT * FROM loans;'
@@ -167,26 +193,31 @@ def print_all_loans():
     for loan in results:
         print(f'{loan[0]:<15}{loan[1]:<15}{loan[2]:<15}{loan[3]:<20}{loan[4]:<20}{loan[5]:<20}')
         #loop finished here
+    #close the database
     db.close()
 
 
 def print_all_loans_sort_by_columns():
     '''Show all the loans in the library order by column names''' 
+    #Creating a list to store all the options
     options = {'1': "book_id", '2': "borrower_id", '3': "loan_date", '4': "due_date", '5': "return_date"}
     while True:  
         #Using a while loop and try except to make sure the code doesn't break
         columnname = input('How would you like to sort the borrowers?\n1.books\n2.borrowers\n3.loan_date\n4.due_date\n5.return_date\n')
         try:
+            #connecting python and database
             db = sqlite3.connect(DATABASE)
             cursor = db.cursor()
             sql = f'SELECT * FROM loans ORDER BY {options[columnname]} ASC;'
             cursor.execute(sql)
             results = cursor.fetchall()
             #loop through all the results
+            #print the table nicely
             print('loan_id        book_id        borrower_id    loan_date           due_date            return_date')
             for loan in results:
                 print(f'{loan[0]:<15}{loan[1]:<15}{loan[2]:<15}{loan[3]:<20}{loan[4]:<20}{loan[5]:<20}')
                 #loop finished here
+            #close the database
             db.close()
             break
         except:
@@ -196,6 +227,7 @@ def print_all_loans_sort_by_columns():
 
 def add_loans():
     '''add loans to the loans table'''
+    #connecting python and database
     db = sqlite3.connect(DATABASE)
     cursor = db.cursor()
     #Asking the user to input the information of the loan
@@ -204,48 +236,66 @@ def add_loans():
     loan_date = input('Enter the loan date: ')
     due_date = input('Enter the due date: \n(loan date + 15 days)')
     return_date = input('Enter the return date: \n(if not returned, please enter Not returned)')
+    #Use the user's inputs in the sql
     sql = f'INSERT INTO borrowers (book_id, borrower_id, loan_date, due_date, return_date) VALUES("{book_id}", "{borrower_id}", "{loan_date}", "{due_date}", "{return_date}");'
     cursor.execute(sql)
-    cursor.fetchall()  
+    cursor.fetchall() 
+    #Commit all changes made in the database 
     db.commit()
+    #close the database
     db.close()
 
 
 def add_return_date():
     '''allows user to add the return date when a book is returned'''
+    #Use a while loop to keep asking for inputs until a valid input is entered
     while True:
         try: 
+            #connecting python and database
             db = sqlite3.connect(DATABASE)
             cursor = db.cursor()
+            #asking the user where they want to add the return date
             loan_id = int(input('Enter the loan id: '))
             return_date = input('Enter the return date (year-month-date): ')
+            #using the user inputs in sql
             sql = f'UPDATE Loans SET return_date = {return_date} WHERE loan_id = {loan_id};'
             cursor.execute(sql)
             cursor.fetchall()
+            #Commit the changes in database
             db.commit()
+            #close the database
             db.close()
+            #break the loop when the changes are made in the database
             break
+        #catches any invalid inputs and made sure the code doesn't break
         except:
             print('Please enter a valid id.')
 
 
 def show_a_persons_loans():
     '''allow user to check the loans for a specific person.'''
+    #Use a while loop to keep asking for inputs until a valid input is entered
     while True:
         try:
+            #connecting python and database
             db = sqlite3.connect(DATABASE)
             cursor = db.cursor()
-            #putting all three tables together
+            #asking which person's loans they want to see
             borrower_id = int(input("Enter the borrower's id: "))
+            #connecting all the tables by comparing the borrower id and book id in the loans table to the borrower id and book id in the borrowers and books table and put all the information together.
             sql = f'SELECT Loans.*, Borrowers.first_name, Borrowers.last_name, Books.book_name FROM Books, Borrowers, Loans WHERE Loans.borrower_id = {borrower_id} AND loans.borrower_id = Borrowers.borrower_id AND Loans.book_id = Books.id;'
+            cursor.execute(sql)
             results = cursor.fetchall()
-            #loop through all the results
+            #print the results nicely in one table
             print('loan_id   borrower_id    name         book_id   book_name      loan_date      due_date       return_date')
             for loan in results:
                 print(f'{loan[0]:<10}{loan[2]:<15}{loan[6]:<6}{loan[7]:<7}{loan[1]:<10}{loan[8]:<15}{loan[3]:<15}{loan[4]:<15}{loan[5]:<10}')
                 #loop finished here
+            #close the database
             db.close()
+            #break the loop 
             break
+        #catches any invalid inputs and made sure the code doesn't break
         except:
             print('Please enter a valid id.')
 
@@ -260,7 +310,7 @@ b. See details about the borrowers
 c. See details about recent loans
 d. Exit\n""")
     
-    #If the user wants to see details about the books, ask if they want to do
+    #If the user wants to see details about the books, show the options
     if user_input == 'a':
         user_input_for_books = input(
 """
@@ -270,7 +320,7 @@ What would you like to do?
 3. Add books
 4. Delete books
 5. Exit\n""")
-        #Call different functions when different numbers are inputed
+        #Call different functions when different numbers are entered
         if user_input_for_books == '1':
             print_all_books()
         elif user_input_for_books == '2':
@@ -282,10 +332,11 @@ What would you like to do?
         elif user_input_for_books == '5':
             break
         else:
+            #when the input doesn't meet any of the conditions above, print that is not an option.
             print('That is not an option.\n')
 
 
-    #If the user wants to see details about the books, ask if they want to do
+    #If the user wants to see details about the borrowers, ask what they want to do
     elif user_input == 'b':
         user_input_for_borrowers = input(
 """
@@ -295,7 +346,7 @@ What would you like to do?
 3. Add borrower
 4. Delete borrower
 5. Exit\n""")
-        #Call different functions when different numbers are inputed
+        #Call different functions when different numbers are entered
         if user_input_for_borrowers == '1':
             print_all_borrowers()
         elif user_input_for_borrowers == '2':
@@ -307,7 +358,10 @@ What would you like to do?
         elif user_input_for_borrowers == '5':
             break
         else:
+            #when the input doesn't meet any of the conditions above, print that is not an option.
             print('That is not an option.\n')
+
+    #If the user wants to see details about the loans, ask what they want to do      
     elif user_input == 'c':
         user_input_for_loans = input(
 """
@@ -318,6 +372,7 @@ What would you like to do?
 4. Check a borrower's loans
 5. Add return date
 6. Exit\n""")
+        #Call different functions when different numbers are entered
         if user_input_for_loans == '1':
             print_all_loans()
         elif user_input_for_loans == '2':
@@ -330,6 +385,10 @@ What would you like to do?
             add_return_date()
         elif user_input_for_loans =='6':
             break
+        else:
+            #when the input doesn't meet any of the conditions above, print that is not an option.
+            print('That is not an option.\n')
+
     else:
         if user_input == 'd':
             break
