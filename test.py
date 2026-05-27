@@ -315,7 +315,7 @@ d. Exit\n""")
     
     #If the user wants to see details about the books, show the options
     if user_input == 'a':
-        #Using another while loop to keep showing the manual for books until the user enter a valid number.
+        #Using another while loop to keep showing the menu for books until the user enter a valid number.
         while True:
             try:
                 #Convert the input into a integer, which allows try and except statement to catch any input that is not an integer.
@@ -326,7 +326,7 @@ What would you like to do?
 2. Sort all books
 3. Add books
 4. Delete books
-5. Go back to the main manual\n"""))
+5. Go back to the main menu\n"""))
 
                 #Call different functions when different numbers are entered
                 if user_input_for_books == 1:
@@ -349,7 +349,7 @@ What would you like to do?
 
     #If the user wants to see details about the borrowers, ask what they want to do
     elif user_input == 'b':
-        #Using another while loop to keep showing the manual for books until the user enter a valid number.
+        #Using another while loop to keep showing the menu for books until the user enter a valid number.
         while True:
             try:
                 #Convert the input into a integer, which allows try and except statement to catch any input that is not an integer
@@ -360,7 +360,7 @@ What would you like to do?
 2. Sort borrower details 
 3. Add borrower
 4. Delete borrower
-5. Go back to the main manual\n"""))
+5. Go back to the main menu\n"""))
                 #Call different functions when different numbers are entered
                 if user_input_for_borrowers == 1:
                     print_all_borrowers()
@@ -382,7 +382,7 @@ What would you like to do?
 
     #If the user wants to see details about the loans, ask what they want to do      
     elif user_input == 'c':
-        #Using another while loop to keep showing the manual for books until the user enter a valid number.
+        #Using another while loop to keep showing the menu for books until the user enter a valid number.
         while True:
             try:
                 #Convert the input into a integer, which allows try and except statement to catch any input that is not an integer
@@ -394,7 +394,7 @@ What would you like to do?
 3. Add loan
 4. Check a borrower's loans
 5. Add return date
-6. Go back to the main manual\n"""))
+6. Go back to the main menu\n"""))
                 #Call different functions when different numbers are entered
                 if user_input_for_loans == 1:
                     print_all_loans()
