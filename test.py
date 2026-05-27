@@ -28,7 +28,7 @@ def print_all_books_sort_by_columns():
     options = {'1': "book_name", '2': "author", '3': "genre", '4': "published_year"}
     #Using a while loop and try except to make sure the code doesn't break
     while True:  
-        columnname = input('How would you like to sort the books?\nBy 1.book_name\n2.author\n3.genre\n4.published_year\n')
+        columnname = input('How would you like to sort the books?\n1.book_name\n2.author\n3.genre\n4.published_year\n')
         try:
             #Connect python and database
             db = sqlite3.connect(DATABASE)
@@ -166,7 +166,7 @@ def delete_borrowers():
             cursor = db.cursor()
             #Asking which borrower the user wants to delete, converting their input into a integer, so if something else is entered the code will move on to except
             borrowerid = int(input ("Please enter borrower's id: "))
-            sql = f'DELETE FROM borrowers WHERE id = {borrowerid}'
+            sql = f'DELETE FROM borrowers WHERE borrower_id = {borrowerid};'
             cursor.execute(sql)
             cursor.fetchall()
             #Commit all changes made in the database 
@@ -178,6 +178,7 @@ def delete_borrowers():
         except:
             #catches any invalid inputs and made sure the code doesn't break
             print('Please enter a valid id.')
+            break
 
 # functions for loans table
 def print_all_loans():
@@ -234,10 +235,10 @@ def add_loans():
     book_id = input ('Enter the book id: ')
     borrower_id = input('Enter the borrower id: ')
     loan_date = input('Enter the loan date: ')
-    due_date = input('Enter the due date: \n(loan date + 15 days)')
-    return_date = input('Enter the return date: \n(if not returned, please enter Not returned)')
+    due_date = input('Enter the due date (loan date + 15 days): ')
+    return_date = input('Enter the return date (if not returned, please enter Not returned):')
     #Use the user's inputs in the sql
-    sql = f'INSERT INTO borrowers (book_id, borrower_id, loan_date, due_date, return_date) VALUES("{book_id}", "{borrower_id}", "{loan_date}", "{due_date}", "{return_date}");'
+    sql = f'INSERT INTO loans (book_id, borrower_id, loan_date, due_date, return_date) VALUES("{book_id}", "{borrower_id}", "{loan_date}", "{due_date}", "{return_date}");'
     cursor.execute(sql)
     cursor.fetchall() 
     #Commit all changes made in the database 
@@ -258,7 +259,7 @@ def add_return_date():
             loan_id = int(input('Enter the loan id: '))
             return_date = input('Enter the return date (year-month-date): ')
             #using the user inputs in sql
-            sql = f'UPDATE Loans SET return_date = {return_date} WHERE loan_id = {loan_id};'
+            sql = f'UPDATE Loans SET return_date = "{return_date}" WHERE loan_id = {loan_id};'
             cursor.execute(sql)
             cursor.fetchall()
             #Commit the changes in database
@@ -287,9 +288,9 @@ def show_a_persons_loans():
             cursor.execute(sql)
             results = cursor.fetchall()
             #print the results nicely in one table
-            print('loan_id   borrower_id    name         book_id   book_name      loan_date      due_date       return_date')
+            print('loan_id   borrower_id    name           book_id   book_name      loan_date      due_date       return_date')
             for loan in results:
-                print(f'{loan[0]:<10}{loan[2]:<15}{loan[6]:<6}{loan[7]:<7}{loan[1]:<10}{loan[8]:<15}{loan[3]:<15}{loan[4]:<15}{loan[5]:<10}')
+                print(f'{loan[0]:<10}{loan[2]:<15}{loan[6]:<6}{loan[7]:<9}{loan[1]:<10}{loan[8]:<15}{loan[3]:<15}{loan[4]:<15}{loan[5]:<10}')
                 #loop finished here
             #close the database
             db.close()
@@ -301,6 +302,7 @@ def show_a_persons_loans():
 
 
 #creating a while loop for the user to use the functions. 
+print('Welcome to my library catalog database. In this program you will be able to check the books, borrowers and recent loans. You are also able to and make changes to these data.')
 while True:
 # asking what the user want to do.
     user_input = input(
@@ -313,8 +315,10 @@ d. Exit\n""")
     
     #If the user wants to see details about the books, show the options
     if user_input == 'a':
+        #Using another while loop to keep showing the manual for books until the user enter a valid number.
         while True:
             try:
+                #Convert the input into a integer, which allows try and except statement to catch any input that is not an integer.
                 user_input_for_books = int(input(
 """
 What would you like to do?
@@ -322,7 +326,7 @@ What would you like to do?
 2. Sort all books
 3. Add books
 4. Delete books
-5. Exit\n"""))
+5. Go back to the main manual\n"""))
 
                 #Call different functions when different numbers are entered
                 if user_input_for_books == 1:
@@ -345,8 +349,10 @@ What would you like to do?
 
     #If the user wants to see details about the borrowers, ask what they want to do
     elif user_input == 'b':
+        #Using another while loop to keep showing the manual for books until the user enter a valid number.
         while True:
             try:
+                #Convert the input into a integer, which allows try and except statement to catch any input that is not an integer
                 user_input_for_borrowers = int(input(
 """
 What would you like to do?
@@ -354,7 +360,7 @@ What would you like to do?
 2. Sort borrower details 
 3. Add borrower
 4. Delete borrower
-5. Exit\n"""))
+5. Go back to the main manual\n"""))
                 #Call different functions when different numbers are entered
                 if user_input_for_borrowers == 1:
                     print_all_borrowers()
@@ -376,8 +382,10 @@ What would you like to do?
 
     #If the user wants to see details about the loans, ask what they want to do      
     elif user_input == 'c':
+        #Using another while loop to keep showing the manual for books until the user enter a valid number.
         while True:
             try:
+                #Convert the input into a integer, which allows try and except statement to catch any input that is not an integer
                 user_input_for_loans = int(input(
 """
 What would you like to do?
@@ -386,7 +394,7 @@ What would you like to do?
 3. Add loan
 4. Check a borrower's loans
 5. Add return date
-6. Exit\n"""))
+6. Go back to the main manual\n"""))
                 #Call different functions when different numbers are entered
                 if user_input_for_loans == 1:
                     print_all_loans()
